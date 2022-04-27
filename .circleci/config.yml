@@ -133,10 +133,10 @@ jobs:
     steps:
       - checkout #Added
       - run: #Added
-        name: Install dependencies
-        command: |
-          apk add --update tar gzip curl
-          pip install awscli
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip curl
+            pip install awscli
       - run:
           name: Ensure back-end infrastructure exists
           command: |
