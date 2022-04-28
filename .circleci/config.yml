@@ -191,13 +191,13 @@ jobs:
 
   run-migrations:
     docker:
-      - image: python:3.7-alpine
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: Run migrations
           command: |
-            cd backend
+            cd ./backend
             npm install
             npm run migrations > migrations_dump.txt
       - run:
