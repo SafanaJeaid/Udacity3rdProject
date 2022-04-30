@@ -144,8 +144,8 @@
 - name: copy backend files
   become: yes
   copy:
-    src: ~/project/artifact.tar.gz
-    dest: ~/backend/artifact.tar.gz
+    src: /root/project/artifact.tar.gz
+    dest: /root/backend
 
 - name: unpack backend files
   become: yes
