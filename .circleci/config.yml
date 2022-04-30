@@ -290,9 +290,11 @@ jobs:
         - image: cimg/base:stable
       steps:
         - checkout
-        - install_awscli
-        - install_ansible
-        - install_nodejs
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip curl nodejs npm ansible zip
+            pip install awscli
         - add_ssh_keys:
             fingerprints: ["8a:07:92:bb:e6:be:00:c9:16:f6:13:47:4e:b0:07:e6"]
         - attach_workspace:
@@ -321,8 +323,10 @@ jobs:
               cd .circleci/ansible
               cat inventory.txt
               ansible-playbook -i inventory.txt deploy-backend.yml
-        - destroy-environment
-        - revert-migrations
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   smoke-test:
     docker:
