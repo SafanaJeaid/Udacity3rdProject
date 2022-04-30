@@ -11,6 +11,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+              pip install awscli
               aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
               aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
               aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
@@ -26,7 +27,7 @@ commands:
           command: |
             migrationSuccess=$(curl -H "token: ${CIRCLE_WORKFLOW_ID:0:7}" \
             --request GET https://kvdb.io/values/migration_status_${CIRCLE_WORKFLOW_ID})             SUCCESS = 1
-            if(( $SUCCESS==1 )); 
+            if(( $migrationSuccess==1 )); 
             then
               cd ~/project/backend
               npm install

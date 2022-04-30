@@ -17,7 +17,7 @@
 - name: "Install dependencies for project"
   shell: |
       cd ~/backend-app
-      npm install --force
+      install npm
 - name: "Executing node"
   shell: |
       export
