@@ -289,17 +289,22 @@ jobs:
           command: |
             apk add --update tar gzip curl nodejs npm ansible zip
             pip install awscli
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-                        --filters "Name=tag:Name,Values=udapeople-backend" \
-                        --query 'Reservations[*].Instances[*].PublicIpAddress' \
-                        --output text)
+      # - run:
+      #     name: Get backend url
+      #     command: |
+      #       export BACKEND_IP=$(aws ec2 describe-instances \
+      #                   --filters "Name=tag:Name,Values=udapeople-backend" \
+      #                   --query 'Reservations[*].Instances[*].PublicIpAddress' \
+      #                   --output text)
       - run:
           name: Backend smoke test.
           command: |
             # Fetch and prepare the BACKEND_IP env var
+            BACKEND_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=udapeople-backend" \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
+            echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
