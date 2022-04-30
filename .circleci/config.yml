@@ -25,8 +25,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            migrationSuccess=$(curl -H "token: ${CIRCLE_WORKFLOW_ID:0:7}" \
-            --request GET https://kvdb.io/values/migration_status_${CIRCLE_WORKFLOW_ID})             SUCCESS = 1
+            migrationSuccess=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
             if(( $migrationSuccess==1 )); 
             then
               cd ~/project/backend

@@ -1,35 +1,61 @@
----
-- name: "Creates backend app directory"
-  file:
-      path: ~/backend-app
-      state: directory
+# ---
+# - name: "Creates backend app directory"
+#   file:
+#       path: ~/backend-app
+#       state: directory
 
-- name: "Copy compiled backend app"
-  copy:
-      src: dist.zip
-      dest: "~/backend-app/dist.zip"
+# - name: "Copy compiled backend app"
+#   copy:
+#       src: dist.zip
+#       dest: "~/backend-app/dist.zip"
 
-- name: "Unzip backend files"
-  shell: |
-      cd ~/backend-app
-      unzip dist.zip
-      rm -rf dist.zip
-# - name: "Install dependencies for project"
+# - name: "Unzip backend files"
 #   shell: |
 #       cd ~/backend-app
-#       install npm
-- name: "Executing node"
-  shell: |
-      export
-      cd ~/backend-app
-      pm2 start main.js --update-env
-  register: execute_node
+#       unzip dist.zip
+#       rm -rf dist.zip
+# # - name: "Install dependencies for project"
+# #   shell: |
+# #       cd ~/backend-app
+# #       install npm
+# - name: "Executing node"
+#   shell: |
+#       export
+#       cd ~/backend-app
+#       pm2 start main.js --update-env
+#   register: execute_node
 
-- name: print message
-  debug:
-      msg: "{{ execute_node.stdout_lines }}"
+# - name: print message
+#   debug:
+#       msg: "{{ execute_node.stdout_lines }}"
 
-- name: "Configure pm2 to start as service"
-  become: true
+# - name: "Configure pm2 to start as service"
+#   become: true
+#   shell: |
+#       env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
+
+---
+- name: Copy backend compiled files web server
+  copy:
+    src: backend.zip
+    dest: /home/ubuntu
+
+- name: Unzip backend files
   shell: |
-      env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
+    unzip /home/ubuntu/backend.zip
+- name: Install Node
+  shell: |
+    cd /home/ubuntu/backend
+    npm install
+- name: Build Node
+  shell: |
+    cd /home/ubuntu/backend
+    npm run build
+- name: Start backend with pm2
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 start npm --name backend -- start
+- name: save your list of processes
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 save
