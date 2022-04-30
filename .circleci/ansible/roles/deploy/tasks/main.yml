@@ -18,3 +18,18 @@
   shell: |
       cd ~/backend-app
       npm install --force
+- name: "Executing node"
+  shell: |
+      export
+      cd ~/backend-app
+      pm2 start main.js --update-env
+  register: execute_node
+
+- name: print message
+  debug:
+      msg: "{{ execute_node.stdout_lines }}"
+
+- name: "Configure pm2 to start as service"
+  become: true
+  shell: |
+      env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu

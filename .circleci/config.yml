@@ -259,6 +259,9 @@ jobs:
           name: Deploy backend
           command: |
             cd backend
+            zip -rq dist.zip *
+            mkdir -p ~/project/.circleci/ansible/roles/deploy/files
+            mv dist.zip ~/project/.circleci/ansible/roles/deploy/files/
             npm i
             npm run build
             cd ..
