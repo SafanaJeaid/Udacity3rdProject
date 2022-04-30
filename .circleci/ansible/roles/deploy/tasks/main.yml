@@ -173,12 +173,12 @@
 
 - name: "Unarchive backend files"
   unarchive:
-    src: artifact.tar.gz
+    src: ~/backend/artifact.tar.gz
     dest: ~/backend
 
 - name: "Installing Node Dependencies"
   shell: |
-    cd ~/backend-app
+    cd ~/backend
     npm i
 - name: "Executing Node app with PM2"
   shell: |
