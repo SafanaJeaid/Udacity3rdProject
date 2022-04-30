@@ -36,8 +36,8 @@
     ansible_stdout_callback: yaml
 
   environment:
-    NODE_ENV: production
-    VERSION: "1"
+    #NODE_ENV: production
+    #VERSION: "1"
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
     TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR') }}"
     TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES') }}"
@@ -58,7 +58,7 @@
       raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
       changed_when: false
     
-    - setup:
+    #- setup:
 
   roles:
     - deploy
