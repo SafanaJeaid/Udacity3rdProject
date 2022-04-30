@@ -288,6 +288,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update tar gzip curl nodejs npm ansible zip
+            pip install awscli
       - run:
           name: Get backend url
           command: |
