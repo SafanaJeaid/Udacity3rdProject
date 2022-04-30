@@ -1,19 +1,19 @@
-# ---
-# - name: "Creates backend app directory"
-#   file:
-#       path: ~/backend-app
-#       state: directory
+---
+- name: "Creates backend app directory"
+  file:
+      path: ~/backend-app
+      state: directory
 
-# - name: "Copy compiled backend app"
-#   copy:
-#       src: dist.zip
-#       dest: "~/backend-app/dist.zip"
+- name: "Copy compiled backend app"
+  copy:
+      src: dist.zip
+      dest: "~/backend-app/dist.zip"
 
-# - name: "Unzip backend files"
-#   shell: |
-#       cd ~/backend-app
-#       unzip dist.zip
-#       rm -rf dist.zip
+- name: "Unzip backend files"
+  shell: |
+      cd ~/backend-app
+      unzip dist.zip
+      rm -rf dist.zip
 # # - name: "Install dependencies for project"
 # #   shell: |
 # #       cd ~/backend-app
@@ -34,15 +34,15 @@
 #   shell: |
 #       env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
 
----
-- name: Copy backend compiled files web server
-  copy:
-    src: backend.zip
-    dest: /home/ubuntu
+# ---
+# - name: Copy backend compiled files web server
+#   copy:
+#     src: backend.zip
+#     dest: /home/ubuntu
 
-- name: Unzip backend files
-  shell: |
-    unzip /home/ubuntu/backend.zip
+# - name: Unzip backend files
+#   shell: |
+#     unzip /home/ubuntu/backend.zip
 - name: Install Node
   shell: |
     cd /home/ubuntu/backend
