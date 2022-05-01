@@ -238,11 +238,6 @@
     state: latest
     update_cache: yes
 
-- name: Install dependencies
-  command: npm install
-  args:
-    chdir: /home/ubuntu/backend
-
 - name: "install pm2"
   become: true
   npm:
@@ -266,11 +261,16 @@
     cd /home/ubuntu/
     tar xvzf artifact.tar.gz -C .
     ls -la
-- name: install node
-  shell: |
-    cd /home/ubuntu/backend
-    npm install
-    npm install --only=dev
+
+- name: Install dependencies
+  command: npm install
+  args:
+    chdir: /home/ubuntu/backend
+# - name: install node
+#   shell: |
+#     cd /home/ubuntu/backend
+#     npm install
+#     npm install --only=dev
 - name: Build package
   shell: |
     cd /home/ubuntu/backend
