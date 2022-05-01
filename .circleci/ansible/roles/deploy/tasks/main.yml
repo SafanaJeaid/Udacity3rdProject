@@ -176,13 +176,6 @@
     src: artifact.tar.gz
     dest: /home/ubuntu/backend
 
-# - name: "copy backend file"
-#   become: true
-#   copy:
-#     src: /root/project/backend
-#     dest: /root
-#     force: no
-
 - name: "upgrade packages."
   become: true
   apt:
@@ -211,7 +204,7 @@
 #   shell: |
 #     cd ~/backend-app
 #     npm install
-  
+
 - name: "Executing Node app with PM2"
   shell: |
     cd /home/ubuntu/backend/dist
