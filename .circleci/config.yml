@@ -24,11 +24,11 @@ commands:
            type: string  
     steps:
       - run:
-          name: Revert migrations
+          name: Revert migrationsss
           when: on_fail
           command: |
-            migrationSuccess=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.workflow_id >>)
-            if(( $migrationSuccess==1 )); 
+            Success=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.workflow_id >>)
+            if(( $Success==1 )); 
             then
               cd ~/project/backend
               npm install
@@ -259,38 +259,6 @@ jobs:
   deploy-backend:
     docker:
       - image: python:3.7-alpine
-  #   steps:
-  #     - checkout
-  #     - add_ssh_keys:
-  #         fingerprints: ["8a:07:92:bb:e6:be:00:c9:16:f6:13:47:4e:b0:07:e6"]
-  #     - attach_workspace:
-  #         at: ~/
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           apk add --update tar gzip curl nodejs npm ansible zip
-  #     - run:
-  #         name: Deploy backend
-  #         command: |
-  #           cd backend
-  #           npm i
-  #           npm run build
-  #           cp package* ./dist
-  #           cd ..
-  #           tar -C backend -czvf artifact.tar.gz .
-  #           # cp artifact.tar.gz .circleci/ansible
-  #           cd .circleci/ansible
-  #           cat inventory.txt
-  #           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt deploy-backend.yml
-
-  #     - revert-migrations:
-  #         workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-  #     - destroy-environment:
-  #         workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-
-#  deploy-backend:
-#     docker:
-#       - image: python:3.7-alpine
     steps:
       - checkout
       - run:
