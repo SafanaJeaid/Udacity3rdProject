@@ -188,11 +188,11 @@
   apt:
     upgrade: "yes"
 
-- name: "install dependencies."
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    update_cache: yes
+# - name: "install dependencies."
+#   become: true
+#   apt:
+#     name: ["nodejs", "npm"]
+#     update_cache: yes
 
 - name: Install dependencies
   command: npm install
