@@ -197,7 +197,7 @@
 - name: Install dependencies
   command: npm install
   args:
-    chdir: /home/ubuntu/backend
+    chdir: ~/backend-app
 
 - name: "install pm2"
   become: true
