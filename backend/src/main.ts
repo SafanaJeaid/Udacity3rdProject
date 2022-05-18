@@ -12,7 +12,7 @@ import { ErrorFilter } from './modules/errors/error.filter';
 
 async function bootstrap() {
   const logger = new AppLogger();
-  logger.info(`NodeJs Version ${process.version}`);
+  logger.info('NodeJs Version ${process.version}');
   logger.info(JSON.stringify(process.env));
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
@@ -28,7 +28,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('customTag')
     .setBasePath(apiVersionPrefix)
-    .addBearerAuth() // here is an intentional compile error. Remove the "x" and the backend should compile.
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(`api/${apiVersionPrefix}`, app, document);
