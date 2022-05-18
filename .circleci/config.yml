@@ -40,11 +40,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-              pip install awscli
-              echo "Destroying environment: << parameters.workflow_id >> "
-              aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
-              aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-              aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -208,21 +206,24 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine
+      - image: cimg/base:stable
     steps:
       - checkout
+      - install_awscli
+      - install_ansible
       - add_ssh_keys:
           fingerprints: ["ba:2e:91:05:ee:73:ae:ea:48:8e:85:85:06:ac:7e:e8"]
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update tar gzip curl nodejs npm ansible zip
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --update tar gzip curl nodejs npm ansible zip
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
+            cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -250,7 +251,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/node:13.8.0
+      - image: cimg/node:14.18.1
     steps:
       - checkout
       - install_awscli
