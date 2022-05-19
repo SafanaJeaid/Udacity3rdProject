@@ -815,8 +815,8 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
-            sudo npm install
-            sudo npm run build
+            npm install
+            npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
@@ -880,12 +880,12 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
-            sudo npm install
+            npm install
       - run:
           name: Package Backend
           command: |
             cd backend
-            sudo npm run build
+            npm run build
             tar -czf artifact.tar.gz dist/* package*
             cd ..
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
