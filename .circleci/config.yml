@@ -731,6 +731,8 @@ jobs:
       - destroy-environment
 
   run-migrations:
+  #npm cache clean -f
+  #npm audit fix
     docker:
       - image: cimg/node:13.8.0
     steps:
@@ -740,9 +742,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm cache clean -f
             npm install
-            npm audit fix
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration status to kvdb.io
