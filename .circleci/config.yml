@@ -392,7 +392,7 @@ jobs:
               export OldWorkflowID=$(aws cloudformation \
                 list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                 --no-paginate --output text)
-              echo $OLD_WORKFLOW_ID >> .circleci/files/OldWorkFlowID.txt
+              echo $OldWorkflowID >> .circleci/files/OldWorkFlowID.txt
               cat .circleci/files/OldWorkFlowID.txt
 
               aws cloudformation deploy \
@@ -428,8 +428,8 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            cat ~/OldWorkFlowID.txt
-            OldWorkflowID=$(cat ~/OldWorkFlowID.txt)
+            cat .circleci/files/OldWorkFlowID.txt
+            OldWorkflowID=$(cat .circleci/files/OldWorkFlowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
 
