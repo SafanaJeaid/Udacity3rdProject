@@ -480,13 +480,13 @@ jobs:
               if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
               then
                 # your code here
-                echo '--Delete Time--'
-                aws s3 rm "s3://${OldWorkflowID}" --recursive
+                echo '--Delete done--'
+                aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
                 aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
                 echo '--Delete Complete--'
               else
-                echo '--Nope--'
+                echo '--Delete didn't happen--'
               fi
             
 
