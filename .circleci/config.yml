@@ -158,10 +158,10 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli #Added
+      - image: amazon/aws-cli
     steps:
-      - checkout #Added
-      - run: #Added
+      - checkout
+      - run:
           name: Install dependencies
           command: |
             yum -y install tar gzip
@@ -202,16 +202,16 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - install_awscli
-      - install_ansible
+      # - install_awscli
+      # - install_ansible
       - add_ssh_keys:
           fingerprints: ["ba:2e:91:05:ee:73:ae:ea:48:8e:85:85:06:ac:7e:e8"]
       - attach_workspace:
           at: ~/
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       apk add --update tar gzip curl nodejs npm ansible zip
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip curl nodejs npm ansible zip
       - run:
           name: Configure server
           command: |
@@ -226,7 +226,11 @@ jobs:
       - image: cimg/node:14.18.1
     steps:
       - checkout
-      - install_awscli
+      # - install_awscli
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip curl nodejs npm ansible zip
       - run:
           name: Run migrations
           command: |
@@ -285,9 +289,9 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - install_awscli
-      - install_ansible
-      - install_nodejs
+      # - install_awscli
+      # - install_ansible
+      # - install_nodejs
       - add_ssh_keys:
           fingerprints: ["ba:2e:91:05:ee:73:ae:ea:48:8e:85:85:06:ac:7e:e8"]
       - attach_workspace:
@@ -298,7 +302,8 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
-            npm install
+            # npm install
+            apk add --update tar gzip curl nodejs npm ansible zip
       - run:
           name: Package Backend
           command: |
@@ -405,17 +410,12 @@ jobs:
         - run:
             name: Update cloudfront distribution
             command: |
-              # your code here
               aws cloudformation deploy \
                 --template-file .circleci/files/cloudfront.yml \
                 --stack-name InitialStack \
-                # --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
-                --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --tags project=udapeople
-        # - persist_to_workspace:
-        #     root: ~/
-        #     paths:
-        #       - project/.circleci/files/OldWorkFlowID.txt
+
         - destroy-environment:
             workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
         - revert-migrations:
@@ -457,7 +457,7 @@ jobs:
   cleanup:
       docker:
         # Docker image here
-        - image: amazon/aws-cli
+        - image: cimg/base:stable
       steps:
         # Checkout code from git
         - checkout
@@ -479,7 +479,7 @@ jobs:
               export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
                       --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
               echo Stack names: "${STACKS[@]}"  
-              
+
               # if [[ "${OldWorkflowID}" =~  "${STACKS[@]}"]]
               if [ "${OldWorkflowID}" != "${CIRCLE_WORKFLOW_ID:0:7}" ]
               then
