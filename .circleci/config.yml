@@ -484,7 +484,7 @@ jobs:
                 aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
               else
-                echo '--Delete didn't happen--'
+                echo '--Delete did not happen--'
               fi
             
 
