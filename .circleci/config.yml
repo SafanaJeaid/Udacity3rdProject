@@ -352,7 +352,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: v
+      - image: cimg/base:stable
     steps:
       - checkout
       - run:
